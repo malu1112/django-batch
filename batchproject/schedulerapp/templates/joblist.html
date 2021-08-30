@@ -1,10 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>List of Jobs</title>
+    <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 80%;
+          margin-left:auto;
+          margin-right:auto;
+        }
+        td, th {
+          border: 1px solid #dddddd;
+          text-align: center;
+          padding: 8px;
+
+        }
+
+        tr:nth-child(even) {
+          background-color: #B4E7FF;
+        }
+
+    </style>
 </head>
+
 <body>
+<h1 align="center">List of Batch Jobs <button align="center" onClick="window.location.reload();">Refresh Jobs</button></h1>
+
+<table>
+    <tr>
+        <th>Job Id</th>
+        <th>Job Name</th>
+        <th>Job Enabled?</th>
+        <th>Job Cron Expression</th>
+        <th>Job Lag Check (in Seconds)</th>
+        <th>Job Status</th>
+        <th>Job Content</th>
+        <th>Job Last Executed Timestamp</th>
+    </tr>
+    {% for job in jobs %}
+    <tr>
+        <td>{{job.job_id}}</td>
+        <td>{{job.job_name}}</td>
+        <td>{{job.job_enabled}}</td>
+        <td>{{job.job_cron}}</td>
+        <td>{{job.job_run_lag_check}}</td>
+        {% if job.job_status == 'COMPLETED' %}
+            <td bgcolor="green" style="color:white">{{job.job_status}}</td>
+        {% elif job.job_status == 'RUNNING' %}
+            <td bgcolor="yellow">{{job.job_status}}</td>
+        {% elif job.job_status == 'FAILED'%}
+            <td bgcolor="red" style="color:white">{{job.job_status}}</td>
+        {% else %}
+            <td>{{job.job_status}}</td>
+        {% endif %}
+        <td>{{job.job_content}}</td>
+        <td>{{job.last_updated_ts}}</td>
+    </tr>
+    {% endfor %}
+</table>
 
 </body>
 </html>
